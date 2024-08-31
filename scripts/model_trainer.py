@@ -14,22 +14,17 @@ class ModelTrainer:
         self.y_column = y_column
 
     def _save_predictions_json(self, predictions: DataFrame, path: str):
-        # Converter DataFrame para pandas DataFrame
         pd_predictions = predictions.toPandas()
         
-        # Convert pandas DataFrame para lista de dicionários
         predictions_list = pd_predictions.to_dict(orient="records")
         
-        # Obter o timestamp da predição
         prediction_time = datetime.now().isoformat()
         
-        # Estruturar os dados finais
         final_output = {
             "prediction_time": prediction_time,
             "predictions": predictions_list
         }
         
-        # Verificar se o arquivo já existe
         if os.path.exists(path):
             with open(path, "r") as f:
                 try:
@@ -39,10 +34,8 @@ class ModelTrainer:
         else:
             existing_data = {"predictions": []}
         
-        # Adicionar as novas previsões ao arquivo existente
         existing_data["predictions"].append(final_output)
         
-        # Salvar os dados atualizados no arquivo
         with open(path, "w") as f:
             json.dump(existing_data, f, indent=4)
 

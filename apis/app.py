@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify
+import os
+import json
 
 app = Flask(__name__)
 
@@ -12,6 +14,8 @@ app = Flask(__name__)
 /health/
     Endpoint que irá retornar a saúde da API'''
 
+PATH_TO_PREDICTIONS = "logs/predictions.json"
+PATH_TO_MODEL = "model.pkl"
 
 #config routes
 @app.route('/model/predict', methods=['POST'])
@@ -24,7 +28,22 @@ def load():
 
 @app.route('/model/history', methods=['GET'])
 def history():
-    return jsonify({'history': 'history'})
+    #get data from json file using PATH_TO_PREDICTIONS 
+
+    if not os.path.exists(PATH_TO_PREDICTIONS):
+        return jsonify({"error": "No predictions found"}), 404
+    else:
+        with open(PATH_TO_PREDICTIONS, 'r') as file:
+            try:
+                data = json.load(file)
+                return jsonify(data), 200
+            except json.JSONDecodeError:
+                return jsonify({"error": "Error reading predictions file"}), 500
+        
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
 
 @app.route('/health', methods=['GET'])
 def health():
