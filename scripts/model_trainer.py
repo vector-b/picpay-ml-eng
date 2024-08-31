@@ -3,12 +3,29 @@ from pyspark.ml.regression import RandomForestRegressor
 from pyspark.ml import Pipeline
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.ml.evaluation import RegressionEvaluator
+from datetime import datetime
+import json 
 
 
 class ModelTrainer:
     def __init__(self, X_columns, y_column):
         self.X_columns = X_columns
         self.y_column = y_column
+
+    def _save_predictions_json(self, predictions: DataFrame, path: str):
+        pd_predictions = predictions.toPandas()
+
+        predictions_list = pd_predictions.to_dict(orient="records")
+        
+        prediction_time = datetime.now().isoformat()
+        
+        final_output = {
+            "prediction_time": prediction_time,
+            "predictions": predictions_list
+        }
+        
+        with open(path, "w") as f:
+            json.dump(final_output, f, indent=4)
 
     def create_pipeline(self):
         assembler = VectorAssembler(inputCols=self.X_columns, outputCol="features")
@@ -23,10 +40,13 @@ class ModelTrainer:
         return pipeline.fit(train_data)
 
     def evaluate(self, model, test_data: DataFrame):
-        predictions = model.transform(test_data)
-        
+        predictions = model.transform(test_data) 
+    
         evaluator = RegressionEvaluator(labelCol=self.y_column, predictionCol="prediction", metricName="rmse")
         rmse = evaluator.evaluate(predictions)
         
+        predicted = predictions.select(self.y_column, "prediction")
+
+        self._save_predictions_json(predicted, "logs/predictions.json")
         # return rmse and predictions
-        return rmse, predictions.select(self.y_column, "prediction")
+        return rmse, predicted
