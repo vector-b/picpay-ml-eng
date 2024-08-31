@@ -28,4 +28,5 @@ class ModelTrainer:
         evaluator = RegressionEvaluator(labelCol=self.y_column, predictionCol="prediction", metricName="rmse")
         rmse = evaluator.evaluate(predictions)
         
+        # return rmse and predictions
         return rmse, predictions.select(self.y_column, "prediction")
