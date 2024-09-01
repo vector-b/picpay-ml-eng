@@ -17,7 +17,11 @@ app = Flask(__name__)
 PATH_TO_PREDICTIONS = "logs/predictions.json"
 PATH_TO_MODEL = "model.pkl"
 
-#config routes
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'health': 'health'})
+
 @app.route('/model/predict', methods=['POST'])
 def predict():
     return jsonify({'prediction': 'prediction'})
@@ -28,8 +32,6 @@ def load():
 
 @app.route('/model/history', methods=['GET'])
 def history():
-    #get data from json file using PATH_TO_PREDICTIONS 
-
     if not os.path.exists(PATH_TO_PREDICTIONS):
         return jsonify({"error": "No predictions found"}), 404
     else:
@@ -45,6 +47,3 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
 
-@app.route('/health', methods=['GET'])
-def health():
-    return jsonify({'health': 'health'})
