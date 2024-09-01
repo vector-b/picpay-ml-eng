@@ -1,3 +1,4 @@
+import shutil
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.regression import RandomForestRegressor
 from pyspark.ml import Pipeline
@@ -6,7 +7,7 @@ from pyspark.ml.evaluation import RegressionEvaluator
 from datetime import datetime
 import json 
 import os 
-
+import pickle as pkl
 
 class ModelTrainer:
     def __init__(self, X_columns, y_column):
@@ -50,6 +51,15 @@ class ModelTrainer:
 
     def train(self, pipeline, train_data: DataFrame):
         return pipeline.fit(train_data)
+    
+    def save_model(self, model, path: str):
+        if os.path.exists(path):
+            if os.path.isfile(path):
+                os.remove(path) 
+            elif os.path.isdir(path):
+                shutil.rmtree(path)  
+        
+        model.write().overwrite().save(path)
 
     def evaluate(self, model, test_data: DataFrame):
         predictions = model.transform(test_data) 
@@ -57,11 +67,8 @@ class ModelTrainer:
         evaluator = RegressionEvaluator(labelCol=self.y_column, predictionCol="prediction", metricName="rmse")
         rmse = evaluator.evaluate(predictions)
         
-        # Selecionar as colunas relevantes
         predicted = predictions.select(self.y_column, "prediction")
 
-        # Salvar as previsões no arquivo JSON
         self._save_predictions_json(predicted, "logs/predictions.json")
         
-        # Retornar RMSE e previsões
         return rmse, predicted

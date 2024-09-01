@@ -22,6 +22,10 @@ if __name__ == "__main__":
 
     model = trainer.train(pipeline, train_data)
 
+    model_path = "models/pipeline"
+
+    trainer.save_model(model, model_path)
+
     rmse, predictions = trainer.evaluate(model, test_data)
 
     print(f"RMSE: {rmse}")

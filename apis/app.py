@@ -1,8 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify
+import pandas as pd
+from flask import Flask, jsonify, request
+from pyspark.ml import PipelineModel
+from pyspark.sql import SparkSession
 import os
 import json
 
+def load_pipeline(path: str):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Pipeline not found at {path}")
+    try:
+        return PipelineModel.load(path)
+    except Exception as e:
+        raise Exception(f"Error loading pipeline: {str(e)}")
+
+
 app = Flask(__name__)
+spark = SparkSession.builder.appName("ModelService").getOrCreate()
 
 '''
 /model/predict/
@@ -16,15 +29,38 @@ app = Flask(__name__)
 
 PATH_TO_PREDICTIONS = "logs/predictions.json"
 PATH_TO_MODEL = "model.pkl"
+PIPELINE_PATH = "models/pipeline"
 
 
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({'health': 'health'})
+    try:
+        return jsonify({
+            'status': 'ok',
+            'message': 'API is working fine :)'
+        }), 200
+    
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
 
 @app.route('/model/predict', methods=['POST'])
 def predict():
-    return jsonify({'prediction': 'prediction'})
+    pipeline = load_pipeline(PIPELINE_PATH)
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+
+    df = spark.createDataFrame(pd.DataFrame([data]))
+
+    predictions = pipeline.transform(df)
+    
+    predictions_json = predictions.select("prediction").toPandas().to_dict(orient="records")
+    
+    return jsonify(predictions_json)
 
 @app.route('/model/load', methods=['POST'])
 def load():

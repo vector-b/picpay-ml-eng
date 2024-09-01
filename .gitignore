@@ -3,3 +3,5 @@
 *.csv
 *.pyc
 __pycache__
+models/
+logs/
