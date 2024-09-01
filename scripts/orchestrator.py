@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     train_data, test_data = preprocessor.split_data(processed_data)
 
-    trainer = ModelTrainer(X_columns=["distance", "dep_delay", "arr_delay"], y_column="air_time")
+    trainer = ModelTrainer(X_columns=["distance", "dep_delay", "air_time"], y_column="arr_delay")
 
     pipeline = trainer.create_pipeline()
 
