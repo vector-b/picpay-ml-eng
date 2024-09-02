@@ -17,7 +17,7 @@ def test_health(client):
     assert json_data["status"] == "ok"
 
 def test_load_model(client):
-    model_path = "models/trained_models/model-2024-09-02-00-22-05"
+    model_path = "models/trained_models/test"
     
     response = client.post('/model/load', json={"model_path": model_path})
     

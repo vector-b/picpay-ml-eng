@@ -3,6 +3,5 @@
 *.csv
 *.pyc
 __pycache__
-models/
 logs/
 .pytest_cache/
