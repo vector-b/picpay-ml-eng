@@ -55,9 +55,12 @@ class ModelTrainer:
     def save_model(self, model, path: str):
         if os.path.exists(path):
             if os.path.isfile(path):
-                os.remove(path) 
+                os.remove(path)
             elif os.path.isdir(path):
-                shutil.rmtree(path)  
+                shutil.rmtree(path)
+        
+
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         
         model.write().overwrite().save(path)
 
