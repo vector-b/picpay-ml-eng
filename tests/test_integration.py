@@ -22,9 +22,9 @@ def test_load():
 
 def test_predict(client):
     sample_data = {
-        "distance": 3.5,
-        "dep_delay": 42,
-        "air_time": 1.8,
+        "distance": 1089,
+        "dep_delay": -5.0,
+        "air_time": 160.0,
     }
     
     response = client.post('/model/predict', json=sample_data)
