@@ -2,7 +2,6 @@ pytest
 mongomock
 Flask==3.0.3
 pyspark==3.4.1
-pandas==2.0.3
 seaborn==0.12.2
 matplotlib==3.7.2
 numpy==2.1.0
