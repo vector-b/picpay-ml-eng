@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from preprocess_data import PreprocessData
 from model_trainer import ModelTrainer
+import datetime
 import os
 
 
@@ -22,7 +23,7 @@ if __name__ == "__main__":
 
     model = trainer.train(pipeline, train_data)
 
-    model_path = "models/pipeline"
+    model_path = "models/trained_models/model-" + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 
     trainer.save_model(model, model_path)
 

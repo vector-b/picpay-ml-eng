@@ -64,8 +64,19 @@ def predict():
 
 @app.route('/model/load', methods=['POST'])
 def load():
-    return jsonify({'model': 'model'})
-
+    data = request.get_json()
+    if not data:
+        return jsonify({'error': 'No data provided'}), 400
+    try:
+        model_path = data.get('model_path')
+        if not model_path:
+            return jsonify({'error': 'Model path not provided'}), 400
+        model = load_pipeline(model_path)
+        model.write().overwrite().save(PIPELINE_PATH)
+        return jsonify({"message": "Model successfully loaded"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @app.route('/model/history', methods=['GET'])
 def history():
     if not os.path.exists(PATH_TO_PREDICTIONS):
