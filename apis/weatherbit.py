@@ -2,7 +2,7 @@ import requests
 import json
 
 class WeatherBitDB:
-    ApiToken = ''
+    ApiToken = '1f22b701b6904b66a169a5f52eddbed4'
 
     @classmethod
     def get_weather(cls, lat, lon, start_date, end_date):

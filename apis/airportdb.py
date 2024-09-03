@@ -2,7 +2,7 @@ import requests
 import json
 
 class AirportDB:
-    ApiToken = ''
+    ApiToken = '757e363e492fbb6df56bd03e4f6c123a93f24e3742f98843bd8cb0324ee63fcdf68f360c2744edc250109ad53dae7417'
 
     @classmethod
     def get_airport_data(cls, codes):

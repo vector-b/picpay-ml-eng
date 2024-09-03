@@ -7,10 +7,11 @@ class PreprocessData:
 
     def read_data(self, path: str) -> DataFrame:
         return self.spark.read.csv(path, header=True, inferSchema=True)
-
+    
     def preprocess(self, data: DataFrame) -> DataFrame:
         data = data.filter(data["dep_time"].isNotNull() | data["arr_time"].isNotNull())
         data = data.dropna()
+        #data = WindImporter().import_wind(data)
         return data
 
     def split_data(self, data: DataFrame):
