@@ -143,3 +143,15 @@ pytest
 ```
 Esse projeto também foi configurado para rodar os testes no github actions.
 O arquivo de configuração está presente em __.github/workflows/config.yml__.
+
+
+### Desenho da arquitetura
+
+Há neste projeto 2 desenhos de arquitetura.
+
+Um mostrando como efetivamente está funcionando as funcionalidades da API e do orquestrador.
+E outro mostrando como poderia ser feita uma implementação bem simples em um ambiente cloud.
+
+![Arquitetura](docs/arquitetura.png)
+
+![Arquitetura Cloud](docs/arquitetura_cloud.png)

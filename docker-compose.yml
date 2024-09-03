@@ -2,7 +2,7 @@ services:
   flask-api:
     build:
       context: .
-      dockerfile: apis/Dockerfile
+      dockerfile: src/Dockerfile
     ports:
       - "5000:5000"
 
