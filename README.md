@@ -141,3 +141,5 @@ Os testes estão presentes em __tests/__ e podem ser rodados com o comando:
 ```bash
 pytest
 ```
+Esse projeto também foi configurado para rodar os testes no github actions.
+O arquivo de configuração está presente em __.github/workflows/config.yml__.

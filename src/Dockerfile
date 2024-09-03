@@ -22,12 +22,12 @@ RUN wget https://www.python.org/ftp/python/3.10.12/Python-3.10.12.tgz && \
 WORKDIR /app
 
 # Copy the requirements file
-COPY apis/requirements.txt .
+COPY src/requirements.txt .
 
 RUN pip3.10 install --no-cache-dir -r requirements.txt
 
 # Copy all the directories the API needs
-COPY apis/ /app/apis/
+COPY src/ /app/src/
 COPY scripts/ /app/scripts/
 COPY logs/ /app/logs
 COPY models/ /app/models
@@ -36,4 +36,4 @@ COPY models/ /app/models
 EXPOSE 5000
 
 # Run the API
-CMD ["python3.10", "/app/apis/app.py"]
+CMD ["python3.10", "/app/src/app.py"]

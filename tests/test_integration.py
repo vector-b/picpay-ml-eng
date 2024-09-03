@@ -1,4 +1,4 @@
-from apis.app import app
+from src.app import app
 import random
 import pytest
 import json
