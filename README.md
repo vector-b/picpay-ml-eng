@@ -65,6 +65,9 @@ As APIs externas utilizadas foram:
 - WeatherBit 
 - AirportDB
 
+**IMPORTANTE**: Para utilizar essas APIs, é necessário ter uma chave de acesso.
+Essas chaves devem ser inseridas no arquivo __.env__ dentro de uma pasta __config__ na raiz do projeto!!!!!!!!
+
 Ambas foram utiliadas para incrementar a coluna "wind_speed" no dataset, com base nas identificações dos aeroportos. 
 O código dessas implementações está presente em __apis/airport_db.py e apis/weatherbit.py__
 
@@ -155,3 +158,10 @@ E outro mostrando como poderia ser feita uma implementação bem simples em um a
 ![Arquitetura](docs/arquitetura.png)
 
 ![Arquitetura Cloud](docs/arquitetura_cloud.png)
+
+__Utilização de ferramentas do sagemaker, mlflow e kubernetes para ajuste de dados, treinamento, monitoramento, atualização e inferência__.
+
+
+Normalmente teriam mais comentários, my bad
+
+

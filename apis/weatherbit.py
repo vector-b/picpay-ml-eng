@@ -5,8 +5,11 @@ import os
 dotenv_path = 'config/.env'  # Substitua pelo caminho correto
 load_dotenv(dotenv_path)
 class WeatherBitDB:
+    #Get the API key from the environment .env file in config/.env
     ApiToken = os.getenv('WEATHER_KEY')
     
+
+    # Get weather for a specific lat, lon, date tuple!
     @classmethod
     def get_weather(cls, lat, lon, start_date, end_date):
         url = 'https://api.weatherbit.io/v2.0/history/daily'
@@ -35,6 +38,7 @@ class WeatherBitDB:
             print(f"Erro ao fazer a requisição: {e}")
             return None
 
+    # Get weather for a list of lat, lon, date tuples!
     @classmethod
     def get_weather_list(cls, lat_lon_dates):
         weather_data = {}

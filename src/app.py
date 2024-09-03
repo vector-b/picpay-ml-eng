@@ -32,6 +32,7 @@ PATH_TO_MODEL = "model.pkl"
 PIPELINE_PATH = "models/pipeline"
 
 
+# /health/ Endpoint - Return the health of the API 
 @app.route('/health', methods=['GET'])
 def health():
     try:
@@ -46,6 +47,7 @@ def health():
             'message': str(e)
         }), 500
 
+# /model/predict/ Endpoint - Receive a payload with flight information and return the delay prediction at the destination
 @app.route('/model/predict', methods=['POST'])
 def predict():
     pipeline = load_pipeline(PIPELINE_PATH)
@@ -62,6 +64,8 @@ def predict():
     
     return jsonify(predictions_json)
 
+
+# /model/load/ Endpoint - Receive the pipeline file of the model and make the API ready to make predictions
 @app.route('/model/load', methods=['POST'])
 def load():
     data = request.get_json()
@@ -77,6 +81,7 @@ def load():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+# /model/history/ Endpoint - Display the history of predictions made (the input payload + the predicted outputs)
 @app.route('/model/history', methods=['GET'])
 def history():
     if not os.path.exists(PATH_TO_PREDICTIONS):

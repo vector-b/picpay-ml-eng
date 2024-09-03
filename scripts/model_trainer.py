@@ -40,6 +40,8 @@ class ModelTrainer:
         with open(path, "w") as f:
             json.dump(existing_data, f, indent=4)
 
+    # Create a pipeline with the RandomForestRegressor model and the VectorAssembler needed for the model
+
     def create_pipeline(self):
         assembler = VectorAssembler(inputCols=self.X_columns, outputCol="features")
         
@@ -52,6 +54,7 @@ class ModelTrainer:
     def train(self, pipeline, train_data: DataFrame):
         return pipeline.fit(train_data)
     
+    # Write the model to a file/folder
     def save_model(self, model, path: str):
         if os.path.exists(path):
             if os.path.isfile(path):
