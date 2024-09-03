@@ -1,8 +1,12 @@
 import requests
 import json
+from dotenv import load_dotenv
+import os
 
+dotenv_path = 'config/.env'  # Substitua pelo caminho correto
+load_dotenv(dotenv_path)
 class AirportDB:
-    ApiToken = ''
+    ApiToken = os.getenv('AIRPORT_KEY')
 
     @classmethod
     def get_airport_data(cls, codes):

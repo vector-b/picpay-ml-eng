@@ -1,5 +1,6 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import col, udf
+#from wind_importer import WindImporter
 
 class PreprocessData:
     def __init__(self, spark: SparkSession):
@@ -11,7 +12,8 @@ class PreprocessData:
     def preprocess(self, data: DataFrame) -> DataFrame:
         data = data.filter(data["dep_time"].isNotNull() | data["arr_time"].isNotNull())
         data = data.dropna()
-        #data = WindImporter().import_wind(data)
+        #Wind = WindImporter(self.spark)
+        #data = Wind.import_wind(data)
         return data
 
     def split_data(self, data: DataFrame):
