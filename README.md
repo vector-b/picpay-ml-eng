@@ -44,3 +44,100 @@ Abaixo estão as regras/orientações para a entrega:
     * O desenho da arquitetura pode ser apenas uma **imagem** (.png, .jpg)
 
 **Você deverá apresentar a solução durante a entrevista técnica**
+
+## Guia do Desafio
+
+### Dados
+
+Os dados forma obtidos do arquivo csv em data/airports.csv.
+A análise exploratória e as perguntaso foram realizadas no notebook exploratory_analysis.ipynb.
+
+#### Perguntas
+Boas partes das perguntas foram respondidas, porém algumas não foram respondidas por falta de tempo. 
+
+#### Incremento dos dados
+Neste desafio, foi proposto que fosse feito um incremento dos dados utilizando duas APIs.
+Isso foi realizado e está presente no notebook exploratory_analysis.ipynb = )
+
+### APIs
+#### APIs externas
+As APIs externas utilizadas foram:
+- WeatherBit 
+- AirportDB
+
+Ambas foram utiliadas para incrementar a coluna "wind_speed" no dataset, com base nas identificações dos aeroportos. 
+O código dessas implementações está presente em __apis/airport_db.py e apis/weatherbit.py__
+
+#### API do modelo
+A API do modelo foi implementada em flask e está disponível em __src/app.py__ e está pronta para ser utilizada.
+
+A API possui os seguintes endpoints:
+- /model/predict/
+- /model/load/
+- /model/history/
+- /health/
+
+##### Predict
+O endpoint /model/predict/ recebe um payload com as informações do voo e retorna a previsão do atraso no destino.
+O input deve ser algo como:
+```json
+{
+    "distance": 1000,
+    "dep_delay": 12,
+    "air_time": 120
+}
+```
+
+##### Load
+O endpoint /model/load/ recebe o path de um arquivo pipeline (vector assembler + modelo) e deixa a API pronta para realizar predições.
+
+#### History
+O endpoint /model/history/ exibe o histórico de predições realizadas (o payload de entrada + as saídas preditas).
+
+#### Health
+O endpoint /health/ retorna a saúde da API.
+
+
+A API foi containerizada utilizando docker e o Dockerfile está presente na pasta __src__.
+Mas ela pode ser rodada sem o docker, utilizando o comando:
+```bash
+python src/app.py
+```
+Mais abaixo, na seção de instruções, há mais detalhes sobre como rodar a API.
+
+### Modelo
+O modelo foi treinado utilizando o algoritmo de random forest para regressão linear.
+No entanto, optei por utilizar um Pipeline para realizar o treinamento do modelo, pois assim, posso realizar a transformação dos dados e o treinamento do modelo de forma mais simples e rápida.
+
+Os modelos treinados são salvos em __models/trained_models__ e podem ser usados no load da API.
+
+### Treino
+
+Para treinar o modelo é necessario rodar o arquivo orquestrador __scripts/orchestrator.py__.
+Ele é responsável por realizar o treinamento do modelo e salvar o modelo treinado em __models/trained_models__.
+
+Após isso ele ira calcular as métricas do modelo e gerar um arquivo de predição em __logs/predictions.json__.
+
+### Docker
+
+Para rodar a API e o orquestrador, é necessário ter o docker instalado.
+Foi configurado um arquivo docker-compose.yml para facilitar a execução dos containers.
+Para a execução, basta rodar o comando:
+```bash
+docker-compose build
+```
+Para construir as imagens e depois:
+```bash
+docker-compose up (nome do container)
+```
+Os containers são:
+- flask-api
+- orchestrator
+
+### Testes
+
+Foram realizados testes para a API e seus endpoints.
+Os testes estão presentes em __tests/__ e podem ser rodados com o comando:
+```bash
+pytest
+```

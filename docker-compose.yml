@@ -1,0 +1,16 @@
+services:
+  flask-api:
+    build:
+      context: .
+      dockerfile: apis/Dockerfile
+    ports:
+      - "5000:5000"
+
+  orchestrator:
+    build:
+      context: .
+      dockerfile: scripts/Dockerfile
+    volumes:
+      - ./scripts:/app/scripts
+    environment:
+      - ENV_PATH=/app/scripts/config/.env

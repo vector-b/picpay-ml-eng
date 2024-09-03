@@ -1,0 +1,10 @@
+tests/
+notebook/
+models/trained_models/
+docs/
+.github/
+.pytest_cache/
+.venv/
+.vscode/
+__pycache__/
+config/
